@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["linux-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -15,40 +14,40 @@ datasource db {
 }
 
 model Route {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   source      Place
   destination Place
   distance    Float
   duration    Float
+  freight     Float?
   directions  Json
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-
-
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
   RouteDriver RouteDriver?
 }
 
-
-model RouteDriver{
+model RouteDriver {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  route       Route @relation(fields: [route_id], references: [id])
-  route_id   String @db.ObjectId @unique
+  route      Route    @relation(fields: [route_id], references: [id])
+  route_id   String   @unique @db.ObjectId
   points     Point[]
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-}
-type Place {
-  name       String
-  location   Coord
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  //status - iniciado, finalizado
 }
 
-type Point{
+type Place {
+  name     String
+  location Coord
+}
+
+type Point {
   location   Coord
   created_at DateTime @default(now())
 }
 
-type Coord{
+type Coord {
   lat Float
   lng Float
 }
